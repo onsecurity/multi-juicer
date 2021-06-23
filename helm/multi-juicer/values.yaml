@@ -14,7 +14,7 @@ ingress:
     nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required - onsec'
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: multi-juicer.local
+    - host: onsecurity.training
       paths:
         - "/"
   tls: []

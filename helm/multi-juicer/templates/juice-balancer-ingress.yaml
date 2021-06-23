@@ -26,11 +26,6 @@ spec:
       secretName: {{ .secretName }}
   {{- end }}
 {{- end }}
-  defaultBackend:
-    service:
-      name: juice-balancer
-      port:
-        number: {{ $svcPort }}
   rules:
   {{- range .Values.ingress.hosts }}
     - host: {{ .host | quote }}
