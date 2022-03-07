@@ -25,6 +25,9 @@ spec:
         - name: progress-watchdog
           image: '{{ .Values.progressWatchdog.repository }}:{{ .Values.progressWatchdog.tag | default (printf "v%s" .Chart.Version) }}'
           imagePullPolicy: {{ .Values.imagePullPolicy | quote }}
+          ports:
+            - name: http
+              containerPort: 8080
           env:
             - name: NAMESPACE
               valueFrom:
@@ -36,11 +39,11 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.balancer.affinity }}
+      {{- with .Values.progressWatchdog.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.balancer.tolerations }}
+      {{- with .Values.progressWatchdog.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}

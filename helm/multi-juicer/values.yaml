@@ -1,4 +1,4 @@
-# Default values for foobar.
+# Default values for MultiJuicer.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -59,7 +59,9 @@ balancer:
       memory: 256Mi
       cpu: 400m
   securityContext: {}
+  # -- Optional Configure kubernetes scheduling affinity for the created JuiceShops (see: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)
   affinity: {}
+  # -- Optional Configure kubernetes toleration for the created JuiceShops (see: https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)
   tolerations: []
   # -- If set to true this skips setting ownerReferences on the teams JuiceShop Deployment and Services. This lets MultiJuicer run in older kubernetes cluster which don't support the reference type or the app/v1 deployment type
   skipOwnerReference: false
@@ -82,15 +84,15 @@ juiceShop:
   maxInstances: 10
   # -- Juice Shop Image to use
   image: bkimminich/juice-shop
-  tag: v12.7.1
+  tag: v13.2.2
   # -- Change the key when hosting a CTF event. This key gets used to generate the challenge flags. See: https://pwning.owasp-juice.shop/part1/ctf.html#overriding-the-ctfkey
   ctfKey: "zLp@.-6fMW6L-7R3b!9uR_K!NfkkTr"
   # -- Specify a custom Juice Shop config.yaml. See the JuiceShop Config Docs for more detail: https://pwning.owasp-juice.shop/part1/customization.html#yaml-configuration-file
   # @default -- See values.yaml for full details
   config: |
     application:
-      logo: JuiceShopCTF_Logo.png
-      favicon: favicon_ctf.ico
+      logo: https://raw.githubusercontent.com/iteratec/multi-juicer/master/images/multijuicer-icon-only-padding.png
+      favicon: https://raw.githubusercontent.com/iteratec/multi-juicer/master/juice-balancer/ui/public/favicon.ico
       showVersionNumber: false
       showGitHubLinks: false
     challenges:
@@ -136,6 +138,14 @@ juiceShop:
   #   mountPath: /juice-shop/frontend/dist/frontend/assets/public/images/custom.png
   #   subPath: custom.png
   #   readOnly: true
+  
+  # -- Optional Configure kubernetes scheduling affinity for the created JuiceShops (see: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)
+  affinity: {}
+  # -- Optional Configure kubernetes toleration for the created JuiceShops (see: https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)
+  tolerations: []
+
+  # -- Optional Can be used to configure the runtime class for the JuiceShop pods to add an additional layer of isolation to reduce the impact of potential container escapes. (see: https://kubernetes.io/docs/concepts/containers/runtime-class/)
+  runtimeClassName: null
 
 # Deletes unused JuiceShop instances after a configurable period of inactivity
 progressWatchdog:
@@ -149,6 +159,10 @@ progressWatchdog:
       memory: 48Mi
       cpu: 20m
   securityContext: {}
+  # -- Optional Configure kubernetes scheduling affinity for the ProgressWatchdog (see: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)
+  affinity: {}
+  # -- Optional Configure kubernetes toleration for the ProgressWatchdog (see: https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)
+  tolerations: []
 
 # Deletes unused JuiceShop instances after a configurable period of inactivity
 juiceShopCleanup:
@@ -167,5 +181,7 @@ juiceShopCleanup:
     limits:
       memory: 256Mi
   securityContext: {}
+  # -- Optional Configure kubernetes scheduling affinity for the JuiceShopCleanup Job(see: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)
   affinity: {}
+  # -- Optional Configure kubernetes toleration for the JuiceShopCleanup Job (see: https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)
   tolerations: []
